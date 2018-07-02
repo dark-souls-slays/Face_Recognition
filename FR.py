@@ -12,8 +12,10 @@ def inputs():
     y = []
     check = 0
     size = 128, 128
-    path = "/Users/ClaudiaEspinoza/Desktop/Face Recognition System/Face Database"
+    path = "/Users/ClaudiaEspinoza/Desktop/Face Recognition System/training_data"
     for f in os.listdir(path):
+        if f == '.DS_Store':
+            continue
         im = Image.open(os.path.join(path,f))
         im = im.convert('L')
         im = im.resize((size), Image.ANTIALIAS)
@@ -28,9 +30,9 @@ def inputs():
 
     dataset = np.array(dataset)
     #CHECK THAT THIS PARTICULAR  IMAGE CORRESPONDS WITH ITS Y LABEL
-    m = Image.fromarray(dataset[649].reshape(128,128), 'L')
+    m = Image.fromarray(dataset[499].reshape(128,128), 'L')
     m.save("this.jpg")
-    print(y[649])
+    print(y[499])
     return (dataset,y)
 """
 def classifier():
@@ -41,6 +43,7 @@ def classifier():
     print(x.shape)
     print(y.shape)
 """
-dataset = inputs()
+dataset, labels = inputs()
+#preprecoess
 #classifier()
 #softmax used to get the probabilities of each class
