@@ -75,8 +75,8 @@ model.add(layers.Dense(256, activation='relu'))
 model.add(layers.Dense(51, activation='softmax'))
 
 model.compile(loss='binary_crossentropy',
-              optimizer='rmsprop',
-              metrics=['accuracy'])
+              optimizer=optimizers.RMSprop(lr=1e-4),
+              metrics=['acc'])
 
 model.fit(training_set,labels, batch_size=5, epochs=15)
 
