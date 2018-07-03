@@ -4,12 +4,10 @@ import glob
 import os, os.path
 import tensorflow as tf
 import matplotlib.pyplot as plt
-from keras.models import Sequential
-from keras.layers.convolutional import Conv2D, ZeroPadding2D
-from keras.layers.pooling import MaxPooling2D
-from keras.layers.core import Dense, Dropout, Flatten, Activation
+from keras import models
+from keras import layers
 from keras.utils import to_categorical
-from keras.optimizers import RMSprop
+from keras import optimizers
 
 def inputs(ID):
     imgs = []
@@ -17,7 +15,7 @@ def inputs(ID):
     y = []
     check = 0
     size = 128, 128
-    path = "/Users/ClaudiaEspinoza/Desktop/Face Recognition System/"+ str(ID)
+    path = "/home/asuncion/Documents/ML/Face_Recognition/"+ str(ID)
     for f in os.listdir(path):
         if f == '.DS_Store':
             continue
@@ -41,55 +39,50 @@ def inputs(ID):
     """
     return (dataset,y)
 
-trainingset, labels = inputs("training_data")
-testset, labelsTest = inputs("test_data")
+training_set, labels = inputs("training_data")
+test_set, labels_test = inputs("test_data")
 epochs = 20
 
 #Pixel value normalization
-trainingset = trainingset.astype('float32')
-testset = testset.astype('float32')
-trainingset /= 255.0
-testset /= 255.0
+training_set = training_set.astype('float32') / 255.0
+test_set = test_set.astype('float32') / 255.0
 
 # one hot encoding
-y_train = to_categorical(labels)
-y_test = to_categorical(labelsTest)
+labels = to_categorical(labels)
+labels_test = to_categorical(labels_test)
 # invert encoding
 #inverted = argmax(encoded[0])
 #print(inverted)
 
-trainingset.reshape(500,128,128,3)
-testset.reshape(150,128,128,3)
-print(trainingset)
+training_set.reshape(500,128,128,3)
+test_set.reshape(150,128,128,3)
+print(training_set)
 input_shape = (128,128,3)
 
-model = Sequential()
-model.add(Conv2D(32, (3, 3), input_shape=input_shape))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model = models.Sequential()
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
+model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(32, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(layers.Conv2D(32, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(64, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Flatten())
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
-model.add(Dense(51, activation='softmax'))
+model.add(layers.Flatten())
+model.add(layers.Dense(64))
+model.add(layers.Activation('relu'))
+model.add(layers.Dropout(0.5))
+model.add(layers.Dense(51, activation='softmax'))
 
 model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 
-model.fit(trainingset,y_train, batch_size=5, epochs=15)
+model.fit(training_set,labels, batch_size=5, epochs=15)
 
 #Testing
-scores = model.evaluate(testset, y_test)
+scores = model.evaluate(test_set, labels_test)
 print('Loss: %.3f' % scores[0])
 print('Accuracy: %.3f' % scores[1])
 
@@ -99,12 +92,12 @@ print('Accuracy: %.3f' % scores[1])
     #m = Image.fromarray(testset[499].reshape(128,128), 'RGBA')
     #m.show()
 count = 0
-prediction = model.predict_classes(testset)
+prediction = model.predict_classes(test_set)
 print("Predicting...")
 for i in range(150):
     print("Predicting...")
     print(prediction[i])
-    print(np.argmax(y_test[i]))
-    if prediction[i] == np.argmax(y_test[i]):
+    print(np.argmax(labels_test[i]))
+    if prediction[i] == np.argmax(labels_test[i]):
         count = count + 1
 print(float(count)/150.0)
