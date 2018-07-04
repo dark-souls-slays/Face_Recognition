@@ -39,7 +39,23 @@ labels = to_categorical(labels)
 labels_test = to_categorical(labels_test)
 ```
 MODEL <br>
-The layers were combined into a network or model. Below we will analyze how our model works. 
+Next, layers were combined into a network or model. The sequential function shows the initializing of our layers. Below we will analyze how our model works. <br>
+Firstly, we used convolutional layers to learn local patterns that are found in 2D windows of the inputs. Given convolutions operate over feature maps, its extracts patches from the input and produces and output feature map. The output depth is a parameter of the layer, and its channels can be thought of as filters. Thus, the output depth can be passed onto the Conv2D layer as arguments. We start with a depth of 32 in our first layer with 'relu' activation and an input of images of 128x128 in color. <br>
+Second, because convolutions are being done in 3x3 windows(as per parameters chosen) Maxpooling2D layer is added. The reason behind is that although the max pooling extracts windows from input feature maps, and output the max value of each channel, they are usually done in 2x2 windows. Hence, they can significantly downsample feature maps. And thus, this reduces the number of feature map cooefecients that will be processed. Furthermore, max pooling can make the next convolutional layer look at larger windows, which is essentially what we did here. <br>
+```python
+model = models.Sequential()
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
+model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+
+model.add(layers.Conv2D(128, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+```
+After going through 3 different convolutions each of increasing depths, 32, 64, and 128, we reach the Flatten layer. A dropout is now inserted for regularization. This dropout serves to randomly dropping out a number of output features of the layer during training; and consequently, dropout helps to reduce overfitting. <br>
+Dense layers are now introduced to learn global patterns involving all pixels of the images being inputted. 
+
 NETWORK COMPILATION <br>
 TRAINING <br>
 ## Discussion
