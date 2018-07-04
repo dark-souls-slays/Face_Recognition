@@ -4,8 +4,8 @@ Final Project - Machine Learning </b>
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 <br>
-# Image Classification System <br>
-## Problem Introduction: 
+## Image Classification System <br>
+## Problem Introduction 
 The task was to build a face recognizer system using a total of 650 images pertaining to 50 different people. Since the data consists of 650 images, 13 images for each different person, it was divided in the following manner:  <br>
 Training -> 10 images * 50 different faces <br>
 Testing -> 3 images * 50 different faces <br>
@@ -40,7 +40,7 @@ labels_test = to_categorical(labels_test)
 ```
 MODEL <br>
 Next, layers were combined into a network or model. The sequential function shows the initializing of our layers. Below we will analyze how our model works. <br>
-Firstly, we used convolutional layers to learn local patterns that are found in 2D windows of the inputs. Given convolutions operate over feature maps, its extracts patches from the input and produces and output feature map. The output depth is a parameter of the layer, and its channels can be thought of as filters. Thus, the output depth can be passed onto the Conv2D layer as arguments. We start with a depth of 32 in our first layer with 'relu' activation and an input of images of 128x128 in color. <br>
+Firstly, we used convolutional layers to learn local patterns that are found in 2D windows of the inputs. Given convolutions operate over feature maps, it extracts patches from the input and produces and output feature map. The output depth is a parameter of the layer, and its channels can be thought of as filters. Thus, the output depth can be passed onto the Conv2D layer as arguments. We start with a depth of 32 in our first layer with 'relu' activation and an input of images of 128x128 in color. <br>
 Second, because convolutions are being done in 3x3 windows(as per parameters chosen) Maxpooling2D layer is added. The reason behind is that although the max pooling extracts windows from input feature maps, and output the max value of each channel, they are usually done in 2x2 windows. Hence, they can significantly downsample feature maps. And thus, this reduces the number of feature map cooefecients that will be processed. Furthermore, max pooling can make the next convolutional layer look at larger windows, which is essentially what we did here. <br>
 ```python
 model = models.Sequential()
@@ -53,9 +53,19 @@ model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 model.add(layers.Conv2D(128, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 ```
-After going through 3 different convolutions each of increasing depths, 32, 64, and 128, we reach the Flatten layer. A dropout is now inserted for regularization. This dropout serves to randomly dropping out a number of output features of the layer during training; and consequently, dropout helps to reduce overfitting. <br>
-Dense layers are now introduced to learn global patterns involving all pixels of the images being inputted. This network consists of a chain of two Dense layers, and each layer is responsible for applying operations on the weight tensors. 
+After going through 3 different convolutions each of increasing depths, 32, 64, and 128, we reach the Flatten layer. A dropout was inserted for regularization. This dropout serves to randomly dropping out a number of output features of the layer during training; and consequently, dropout helps to reduce overfitting. <br>
+Dense layers were now introduced to learn global patterns involving all pixels of the images being inputted. This network consists of a chain of two Dense layers, and each layer is responsible for applying operations on the weight tensors. 
 
 NETWORK COMPILATION <br>
+In order to have feedback on the learning of the weight tensors, a loss function was used. We used binary_crossentropy for the loss because we are working on a binary classification problem, with parameters customized on the RMSprop of the loss funtion. The accuracy of the images that were correctly classified will be metrics we are interested in monitoring during our training and testing. Therefore, the following was set:
+```python
+model.compile(loss='binary_crossentropy',
+              optimizer=optimizers.RMSprop(lr=1e-4),
+              metrics=['acc'])
+```
 TRAINING <br>
-## Discussion
+The model was now able to start iterating on the training data in mini-batches of 5. The iterations were done 15 times over, or over 15 epochs. On each epoch, the model computed weight gradients as per the loss on the batch, and updated the weights.
+```python
+model.fit(training_set,labels, batch_size=5, epochs=15)
+```
+## Results and Discussion
