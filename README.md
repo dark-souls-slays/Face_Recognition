@@ -4,11 +4,11 @@ Final Project - Machine Learning </b>
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 <br>
-# Image Classification System
-## Problem Introduction:
-The task was to build a face recognizer system using a total of 650 images pertaining to 50 different people. Since the data consists of 650 images, 13 images for each different person, it was divided in the following manner:  
-Training -> 10 images * 50 different faces
-Testing -> 3 images * 50 different faces
+# Image Classification System <br>
+## Problem Introduction: 
+The task was to build a face recognizer system using a total of 650 images pertaining to 50 different people. Since the data consists of 650 images, 13 images for each different person, it was divided in the following manner:  <br>
+Training -> 10 images * 50 different faces <br>
+Testing -> 3 images * 50 different faces <br>
 
 To build a convolutional neural network for the images they python package, Keras, was chosen. To tackle this problem in theory, it will be broken down as follows: First, import tha data, feed the training data to the network. After the network has learned to associate images and their corresponding labels, the network will make some predictions on the testing data. The predictions will then be verified and optimized where necessary.
 
@@ -54,7 +54,7 @@ model.add(layers.Conv2D(128, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 ```
 After going through 3 different convolutions each of increasing depths, 32, 64, and 128, we reach the Flatten layer. A dropout is now inserted for regularization. This dropout serves to randomly dropping out a number of output features of the layer during training; and consequently, dropout helps to reduce overfitting. <br>
-Dense layers are now introduced to learn global patterns involving all pixels of the images being inputted. 
+Dense layers are now introduced to learn global patterns involving all pixels of the images being inputted. This network consists of a chain of two Dense layers, and each layer is responsible for applying operations on the weight tensors. 
 
 NETWORK COMPILATION <br>
 TRAINING <br>
