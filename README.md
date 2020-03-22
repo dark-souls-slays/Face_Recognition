@@ -6,11 +6,11 @@ Final Project - Machine Learning </b>
 <br>
 
 ## Image Classification System - Problem Introduction
-The task was to build a face recognizer system using a total of 650 images pertaining to 50 different people. Since the data consists of 650 images, 13 images for each different person, it was divided in the following manner:  <br>
+The task was to build a face recognition system using a total of 650 images pertaining to 50 different people. Since the data consists of 650 images, 13 images per label, it was divided in the following manner:  <br>
 Training -> 10 images * 50 different faces <br>
 Testing -> 3 images * 50 different faces <br>
 
-To build a convolutional neural network for the images the python package, Keras, was chosen. To tackle this problem in theory, it will be broken down as follows: First, import tha data, feed the training data to the network. After the network has learned to associate images and their corresponding labels, the network will make some predictions on the testing data. The predictions will then be verified and optimized where necessary.
+To build a convolutional neural network for the images the python package, Keras, was chosen. To tackle this problem in theory, it will be broken down as follows: First, import the data and feed the training data to the network. After the network has learned to associate images and their corresponding labels, the network will make some predictions on the testing data. The predictions will then be verified and optimized where necessary.
 
 ## Solutions
 <b>IMPORT DATA</b> <br>
@@ -80,5 +80,3 @@ While doing this project, the main obstacle encountered was the fact that the da
 
 Despite the fact that an accuracy in the 90's was achieved, the team members learned that there were still images that were not correctly classified. As previously mentioned, this is a problem often fought in learning small datasets because overfitting becomes more prevalent. As a result the network tends to perform a little poorer on data that it hasn't seen before. <b>To improve this<b>, we could have resorted to applying other deep learning methods such as data augmentation, and/or using a pretrained model. <br><br>
 
-<b>Responsibilities Shared </b><br>
-One team member firstly implemented the network while the other observed and learned the discussed ideas being implented on code. After having reached a certain accuracy, the second team member went in to proofread the code and find ways to improve the accuracy. In addition, since the second team member also had an understanding of the code, this team member became responsible of writing and explaining the methods implemented here.
